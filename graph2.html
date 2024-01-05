@@ -21,10 +21,8 @@ var svg = d3.select("#my_dataviz")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  d3.json("https://gist.githubusercontent.com/petitlunette/1ae4109421b8259df452afc85a4a5a60/raw/yourfilename.json").then(data => {
-  // Your code to process and display the data goes here
-  console.log(data);
-  });
+d3.json("https://gist.githubusercontent.com/petitlunette/1ae4109421b8259df452afc85a4a5a60/raw/companion.json").then(data => {
+  // Process and display the data here
 
   // List of node names
   var allNodes = data.nodes.map(function(d) { return d.name });
@@ -37,8 +35,7 @@ var svg = d3.select("#my_dataviz")
     .range([0, width])
     .domain(allNodes);
 
-  // In my input data, links are provided between nodes -id-, NOT between node names.
-  // So I have to do a link between this id and the name
+  // Mapping node IDs to node objects
   var idToNode = {};
   data.nodes.forEach(function (n) {
     idToNode[n.id] = n;
@@ -50,8 +47,8 @@ var svg = d3.select("#my_dataviz")
     .enter()
     .append('path')
     .attr('d', function (d) {
-      var start = x(idToNode[d.source].name);    // X position of start node on the X axis
-      var end = x(idToNode[d.target].name);      // X position of end node
+      var start = x(idToNode[d.source].name); // X position of start node on the X axis
+      var end = x(idToNode[d.target].name);   // X position of end node
       return ['M', start, height-30,
               'A', (start - end)/2, ',', (start - end)/2, 0, 0, ',',
               start < end ? 1 : 0, end, ',', height-30]
@@ -94,11 +91,7 @@ var svg = d3.select("#my_dataviz")
     // Highlight the connections
     links
       .style('stroke', function (link_d) {
-        if (link_d.source === d.id) {
-          return link_d.type === "compatible" ? "green" : "red";  // Use green for compatible, red for incompatible
-        } else {
-          return '#b8b8b8';
-        }
+        return link_d.source === d.id ? (link_d.type === "compatible" ? "green" : "red") : '#b8b8b8';
       })
       .style('stroke-opacity', function (link_d) { return link_d.source === d.id ? 1 : .2; })
       .style('stroke-width', function (link_d) { return link_d.source === d.id ? 4 : 1; });
@@ -113,7 +106,3 @@ var svg = d3.select("#my_dataviz")
   });
 });
 </script>
-  
-  
-</body>
-</html>
