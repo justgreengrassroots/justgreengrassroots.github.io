@@ -54,16 +54,18 @@
         transform: translateY(-50%); /* Adjust to align perfectly at the center */
     }
 
-    /* Ensure the image is centered */
     .carousel-item .item-wrapper {
         display: flex; /* Use flexbox for alignment */
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
+        height: 100%; /* Make the item-wrapper take full height of carousel-item */
     }
 
     .carousel-item .item-wrapper img {
-        max-width: 100%; /* Limit image to maximum 100% width */
-        height: auto; /* Keep image aspect ratio */
+        max-width: none; /* Override the max-width if it's been set */
+        width: auto; /* Allow natural width of the image */
+        height: auto; /* Keep the image's aspect ratio */
+        max-height: 100%; /* Make sure the image does not exceed the container's height */
     }
     </style>
   
